@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="utf-8">
+  <title></title>
+  <!--<link href="style.css" rel="stylesheet" />-->
+</head>
+<body>
+
+<div  id="tappo"><img src="padova/1 evento..png" width=100% height=100%></img></div>
+<div id="video" style="display:none;"><div style="padding:56.25% 0 0 0;position:relative;"><iframe src="https://vimeo.com/event/448966/embed" frameborder="0" allow="fullscreen" allowfullscreen style="position:absolute;top:0;left:0;width:100%;height:100%;"></iframe></div></div>
+  
+
+<script src="https://player.vimeo.com/api/player.js"></script>
+  <script>
+	var tappo = document.getElementById("tappo");
+	var video = document.getElementById("video");
+	
+    	var iframe = document.querySelector('iframe');
+    	var player = new Vimeo.Player(iframe);
+
+	var hide_video = true;
+
+
+	function load_img(){
+		
+		fetch("https://raw.githubusercontent.com/as-cmi/prova/main/video.json")
+		.then( response => response.json() )
+		.then( function(jsonObject){
+			console.log(jsonObject.tappo);			
+
+	
+		if(hide_video != jsonObject.tappo){
+			hide_video = jsonObject.tappo;
+			if(hide_video == false){
+
+				//video in play
+				iframe.src = jsonObject.url_video;
+
+				//nasconde tappo e mostra video
+				tappo.style.display = "none";
+				video.style.display = "block";
+
+			}else{
+				//video in pausa
+				iframe.src = "";
+
+				//nasconde video e mostra tappo
+				tappo.style.display = "block";
+				video.style.display = "none";
+			}
+		}
+
+
+		})
+		.catch(error => console.log("Error: "+error));
+		
+
+	};
+	
+	load_img();
+	var intervalID = setInterval(function(){load_img();}, 5000);
+
+  </script>
+</body>
+</html>
